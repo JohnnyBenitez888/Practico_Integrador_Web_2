@@ -7,14 +7,14 @@ const forma = document.getElementById('forma');
 
 
 //Otras variables
-const urlTop = 'https://collectionapi.metmuseum.org/public/collection/v1';
+const urlTop = 'https://collectionapi.metmuseum.org/public/collection/v1/';
 
 //Funciones
 /* const opcion1 = { method: 'GET', headers: { accept: 'application/json' } }; */
-function llenarDeptos() {
-    const departamentos = fetch(`${urlTop}/departments`)
+function llenarConDeptos() {
+    return fetch(`${urlTop}/departments`)
         .then(response => response.json())
-        .then(response =>{
+        .then(response => {
 
             /* Agregamos el primer option al select */
             let primerOption = document.createElement('option');
@@ -29,10 +29,11 @@ function llenarDeptos() {
                 option.value = departamento.departmentId;
                 option.textContent = departamento.displayName;
                 selec.appendChild(option);
-            })}
+            })
+        }
         ).catch(error => console.log("No pasa nada"));
 }
-llenarDeptos();
+llenarConDeptos();
 
 /* Evento del Formulario */
 forma.addEventListener('submit', (e) => {
@@ -40,7 +41,35 @@ forma.addEventListener('submit', (e) => {
     const buscadorValor = buscador.value;
     const ubicacionValor = ubicacion.value;
     const deptoValor = selec.value;
-    console.log(buscador.value);
-    console.log(ubicacion.value);
-    console.log(selec.value);
+
+    //objeto busqueda
+    const busqueda = {
+        b: buscadorValor,
+        u: ubicacionValor,
+        d: deptoValor
+    };
+
+    /* Llamamos a la funcion para traer las obras */
+    recuperarObras(busqueda);
 })
+
+function recuperarObras(busqueda) {
+    console.log("desde la funcion", busqueda)
+
+    const matrizBusqueda = [];
+
+    if (busqueda.b) {
+        matrizBusqueda.push(`q=${busqueda.b}`);
+    }
+    if (busqueda.u) {
+        matrizBusqueda.push(`geoLocation=${busqueda.u}`);
+    }
+    if (busqueda.d!=0) {
+        matrizBusqueda.push(`departmentId=${busqueda.d}`);
+    }
+
+    console.log(matrizBusqueda);
+    const urlFinal = urlTop + 'search' + '?' + matrizBusqueda.join('&');
+    
+    console.log(urlFinal);
+}
