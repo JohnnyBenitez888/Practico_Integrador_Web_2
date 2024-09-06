@@ -32,5 +32,15 @@ function llenarDeptos() {
             })}
         ).catch(error => console.log("No pasa nada"));
 }
-
 llenarDeptos();
+
+/* Evento del Formulario */
+forma.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const buscadorValor = buscador.value;
+    const ubicacionValor = ubicacion.value;
+    const deptoValor = selec.value;
+    console.log(buscador.value);
+    console.log(ubicacion.value);
+    console.log(selec.value);
+})
