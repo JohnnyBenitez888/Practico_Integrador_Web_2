@@ -44,9 +44,9 @@ forma.addEventListener('submit', (e) => {
 
     //objeto busqueda
     const busqueda = {
-        b: buscadorValor,
-        u: ubicacionValor,
-        d: deptoValor
+        a: buscadorValor,
+        b: ubicacionValor,
+        c: deptoValor
     };
 
     /* Llamamos a la funcion para traer las obras */
@@ -58,14 +58,14 @@ function recuperarObras(busqueda) {
 
     const matrizBusqueda = [];
 
+    if (busqueda.a) {
+        matrizBusqueda.push(`q=${busqueda.a}`);
+    }
     if (busqueda.b) {
-        matrizBusqueda.push(`q=${busqueda.b}`);
+        matrizBusqueda.push(`geoLocation=${busqueda.b}`);
     }
-    if (busqueda.u) {
-        matrizBusqueda.push(`geoLocation=${busqueda.u}`);
-    }
-    if (busqueda.d!=0) {
-        matrizBusqueda.push(`departmentId=${busqueda.d}`);
+    if (busqueda.c!=0) {
+        matrizBusqueda.push(`departmentId=${busqueda.c}`);
     }
 
     console.log(matrizBusqueda);//probando si trae el arreglo
