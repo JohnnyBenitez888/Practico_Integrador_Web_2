@@ -54,7 +54,7 @@ forma.addEventListener('submit', (e) => {
 })
 
 function recuperarObras(busqueda) {
-    console.log("desde la funcion", busqueda)
+    console.log("desde la funcion", busqueda)//probando si trae el objeto
 
     const matrizBusqueda = [];
 
@@ -68,8 +68,10 @@ function recuperarObras(busqueda) {
         matrizBusqueda.push(`departmentId=${busqueda.d}`);
     }
 
-    console.log(matrizBusqueda);
+    console.log(matrizBusqueda);//probando si trae el arreglo
+
+    /* creacion de la url final */
     const urlFinal = urlTop + 'search' + '?' + matrizBusqueda.join('&');
     
-    console.log(urlFinal);
+    console.log(urlFinal);//probando si se arma la url
 }
