@@ -60,6 +60,8 @@ function recuperarObras(busqueda) {
 
     if (busqueda.a) {
         matrizBusqueda.push(`q=${busqueda.a}`);
+    }else{
+        matrizBusqueda.push('q=');
     }
     if (busqueda.b) {
         matrizBusqueda.push(`geoLocation=${busqueda.b}`);
@@ -71,7 +73,7 @@ function recuperarObras(busqueda) {
     console.log(matrizBusqueda);//probando si trae el arreglo
 
     /* creacion de la url final */
-    const urlFinal = urlTop + 'search' + '?' + matrizBusqueda.join('&');
+    const urlFinal = urlTop + 'search' + '?hasImages=true&' + matrizBusqueda.join('&');
     
     console.log(urlFinal);//probando si se arma la url
 }
