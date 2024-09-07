@@ -10,7 +10,6 @@ const forma = document.getElementById('forma');
 const urlTop = 'https://collectionapi.metmuseum.org/public/collection/v1/';
 
 //Funciones
-
 function llenarConDeptos() {
     return fetch(`${urlTop}/departments`)
         .then(response => response.json())
@@ -87,40 +86,45 @@ function mostrarObras(urlFinal) {
     return fetch(urlFinal)
         .then(response => response.json())
         .then(response => {
+            const datos = response.objectIDs;
             /* Achicamos la cantidad de datos */
-            if (response.objectIDs.length > 80) response.objectIDs = response.objectIDs.slice(0, 80);
+            if (datos.length > 60) datos = datos.slice(0, 60);
 
-            console.log("CANTIDAD DE DATOS: " + response.objectIDs.length);
+            console.log("CANTIDAD DE DATOS: " + datos.length);//--------------------------------------
 
-            response.objectIDs.forEach(dato => {
-                //fetch
-                fetch(urlTop + 'objects/' + dato)
-                    .then(response => response.json())
-                    .then(obe => {
-                        console.log(obe);
-                        //creación 
-                        const div = document.createElement('div');
-                        div.style.border = '2px solid black';
-                        div.style.display = 'flex';
-                        document.body.appendChild(div);
-                        const h2 = document.createElement('h2');
-                        h2.innerHTML = obe.title;
-                        div.appendChild(h2);
-                        const img = document.createElement('img');
-                        img.src = obe.primaryImage;
-                        img.style.width = '350px';
-                        img.style.height = '383px';
-                        div.appendChild(img);
-                        const p1 = document.createElement('p');
-                        p1.innerHTML = `Departamento: ${obe.department}`;
-                        div.appendChild(p1);
-                        const p2 = document.createElement('p');
-                        p2.innerHTML = `Cultura: ${obe.culture}`;
-                        div.appendChild(p2);
-                    })
-                    .catch(error => console.log("No Funciona NADA"));
-            })
+            llenarGaleria(datos);
 
         })
         .catch(error => console.log("No se armó el DIV"));
+}
+
+function llenarGaleria(datos) {
+    datos.forEach(dato => {
+        //fetch
+        fetch(urlTop + 'objects/' + dato)
+            .then(response => response.json())
+            .then(obe => {
+                console.log(obe);//--------------------------------------
+                //creación 
+                const div = document.createElement('div');
+                div.style.border = '2px solid black';
+                div.style.display = 'flex';
+                document.body.appendChild(div);
+                const h2 = document.createElement('h2');
+                h2.innerHTML = obe.title;
+                div.appendChild(h2);
+                const img = document.createElement('img');
+                img.src = obe.primaryImage;
+                img.style.width = '350px';
+                img.style.height = '383px';
+                div.appendChild(img);
+                const p1 = document.createElement('p');
+                p1.innerHTML = `Departamento: ${obe.department}`;
+                div.appendChild(p1);
+                const p2 = document.createElement('p');
+                p2.innerHTML = `Cultura: ${obe.culture}`;
+                div.appendChild(p2);
+            })
+            .catch(error => console.log("No Funciona NADA"));
+    })
 }
