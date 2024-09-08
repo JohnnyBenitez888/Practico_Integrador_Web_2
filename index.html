@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="estilo.css">
     <title>Museo Metropolitano de NY </title>
 </head>
+
 <body>
     <header>
         <h1>Museo Metropolitano de NY</h1>
     </header>
-    
+
     <form id="forma">
         <input type="text" name="buscador" id="buscador" class="sisi">
         <input type="text" name="ubicacion" id="ubicacion" class="sisi">
@@ -20,9 +22,18 @@
         <button type="submit" class="boton">Buscar</button>
     </form>
 
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <div id="imagenes-adicionales"></div>
+        </div>
+    </div>
+
     <div class="galeria" id="galeria"></div>
     <div class="botones" id="botones"></div>
 
     <script src="app.js"></script>
 </body>
+
 </html>

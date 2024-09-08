@@ -17,11 +17,11 @@ function llenarConDeptos() {
         .then(respuesta => respuesta.json())
         .then(dato => {
 
-           /*  // Agregamos el primer option al select 
-            let primerOption = document.createElement('option');
-            primerOption.value = 0;
-            primerOption.textContent = 'Todos los Departamentos';
-            selec.appendChild(primerOption); */
+            /*  // Agregamos el primer option al select 
+             let primerOption = document.createElement('option');
+             primerOption.value = 0;
+             primerOption.textContent = 'Todos los Departamentos';
+             selec.appendChild(primerOption); */
 
 
             /* llenamos nuestro select con los departamentos */
@@ -73,7 +73,7 @@ function recuperarObras(busqueda) {
     }
 
     console.log("Arreglo con los datos del Objeto " + matrizBusqueda);//probando si trae el arreglo
-    
+
     /* creacion de la url final */
     let urlFinal = urlMuseo + 'search' + '?hasImages=true&' + matrizBusqueda.join('&');
 
@@ -107,7 +107,7 @@ function mostrarObras(urlFinal) {
 
 function llenarGaleria(datos) {
 
-    
+
 
     //Arreglo con los Datos
     datos.forEach(dato => {
@@ -127,13 +127,68 @@ function llenarGaleria(datos) {
                 img.src = obra.primaryImage;
                 div.appendChild(img);
                 const p1 = document.createElement('p');
-                p1.innerHTML = `Cultura: ${obra.culture}, ID: ${obra.objectID}`;
+
+                //Cultura
+                const cultura = obra.culture;
+                if (cultura === "") {
+                    p1.innerHTML = `Cultura: Desconocida, ID: ${obra.objectID}`;
+                } else {
+                    p1.innerHTML = `Cultura: ${cultura}, ID: ${obra.objectID}`;
+                };
                 div.appendChild(p1);
                 const p2 = document.createElement('p');
-                p2.innerHTML = `Dinastía: ${obra.dynasty}`;
+
+                //Dinastia
+                const dinastia = obra.dynasty;
+                if (dinastia === "") {
+                    p2.innerHTML = `Dinastia: Desconocida`;
+                } else {
+                    p2.innerHTML = `Dinastia: ${dinastia}`;
+                };
                 div.appendChild(p2);
+
+                //Botón de ver mas Imágenes
+                if (obra.additionalImages.length > 0) {
+                    const botonVerMas = document.createElement('button');
+                    botonVerMas.classList.add('btn-ver-mas');
+                    botonVerMas.onclick = () => verMasImagenes(obra.additionalImages);
+                    botonVerMas.textContent = 'Ver más imágenes';
+                    div.appendChild(botonVerMas);
+                }
+
                 galeria.appendChild(div);
             })
             .catch(error => console.log("NO TRAJO LA OBRA " + error));
     })
+}
+
+/* ---------------------MODAL DE IMAGENES----------------- */
+
+function verMasImagenes(imagenes) {
+    const modal = document.getElementById('modal');
+    const contenedor = document.getElementById('imagenes-adicionales');
+    let imagenesReducidad = imagenes;
+
+    // Limpiamos las imágenes previas
+    contenedor.innerHTML = '';
+
+    //Achicamos el arreglo
+    if(imagenesReducidad.length > 4) imagenesReducidad = imagenesReducidad.slice(0, 4);
+
+    /* Añadimos las imágenes al modal */
+    imagenesReducidad.forEach(imagen => {
+        const imgElement = document.createElement('img');
+        imgElement.src = imagen;
+        imgElement.classList.add('imagen-modal');
+        contenedor.appendChild(imgElement);
+    });
+
+    /* Mostramos el modal */
+    modal.style.display = 'flex';
+}
+
+/* ---------------------CERRAR MODAL----------------- */
+function cerrarModal() {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'none';
 }
