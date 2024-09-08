@@ -1,3 +1,12 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
 h1 {
     text-align: center;
     font-size: 50px;
@@ -6,10 +15,10 @@ h1 {
 }
 
 #forma {
-    width: 100%;
+    max-width: 100%;
     padding: 40px;
     display: flex;
-    flex-direction: row;
+    margin: 0 auto;
 
     .sisi {
         width: 100%;
@@ -22,6 +31,7 @@ h1 {
         outline: none;
         color: rgb(255, 255, 255);
     }
+
     .boton {
         width: 70%;
         height: 6px;
@@ -36,4 +46,41 @@ h1 {
         text-align: center;
 
     }
+}
+
+.galeria {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 columnas de igual tamaño */
+    gap: 20px;
+    /* Espacio entre las cards */
+    padding: 20px;
+
+    .cubos {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        text-align: center;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+
+        h3 {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+    }
+}
+
+.imagen {
+    width: 100%;
+    /* La imagen ocupa todo el ancho de la card */
+    height: auto;
+    display: block;
 }

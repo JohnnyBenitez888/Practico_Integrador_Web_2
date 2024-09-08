@@ -7,13 +7,21 @@
     <title>Museo Metropolitano de NY </title>
 </head>
 <body>
-    <h1>Museo Metropolitano de NY</h1>
+    <header>
+        <h1>Museo Metropolitano de NY</h1>
+    </header>
+    
     <form id="forma">
         <input type="text" name="buscador" id="buscador" class="sisi">
         <input type="text" name="ubicacion" id="ubicacion" class="sisi">
-        <select name="depto" id="depto" class="sisi"></select>
+        <select name="depto" id="depto" class="sisi">
+            <option value="0">Todos los Departamentos</option>
+        </select>
         <button type="submit" class="boton">Buscar</button>
     </form>
+
+    <div class="galeria" id="galeria"></div>
+    <div class="botones" id="botones"></div>
 
     <script src="app.js"></script>
 </body>

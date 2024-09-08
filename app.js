@@ -1,41 +1,44 @@
-//Variables del Dom
+//Variables
 const ubicacion = document.getElementById('ubicacion');
 const buscador = document.getElementById('buscador');
 const selec = document.getElementById('depto');
 const forma = document.getElementById('forma');
+let galeria = document.getElementById('galeria');
+const botones = document.getElementById('botones');
 
 
 
 //Otras variables
-const urlTop = 'https://collectionapi.metmuseum.org/public/collection/v1/';
+const urlMuseo = 'https://collectionapi.metmuseum.org/public/collection/v1/';
 
 //Funciones
 function llenarConDeptos() {
-    return fetch(`${urlTop}/departments`)
-        .then(response => response.json())
-        .then(response => {
+    return fetch(`${urlMuseo}/departments`)
+        .then(respuesta => respuesta.json())
+        .then(dato => {
 
-            /* Agregamos el primer option al select */
+           /*  // Agregamos el primer option al select 
             let primerOption = document.createElement('option');
             primerOption.value = 0;
             primerOption.textContent = 'Todos los Departamentos';
-            selec.appendChild(primerOption);
+            selec.appendChild(primerOption); */
 
 
             /* llenamos nuestro select con los departamentos */
-            response.departments.forEach(departamento => {
+            dato.departments.forEach(departamento => {
                 const option = document.createElement('option');
                 option.value = departamento.departmentId;
                 option.textContent = departamento.displayName;
                 selec.appendChild(option);
             })
         }
-        ).catch(error => console.log("No pasa nada"));
+        ).catch(error => console.log("No se llenan los departamentos"));
 }
 llenarConDeptos();
 
 /* Evento del Formulario */
 forma.addEventListener('submit', (e) => {
+    galeria.innerHTML = '';  // Limpiar la galería para cada nueva página
     e.preventDefault();
     const buscadorValor = buscador.value;
     const ubicacionValor = ubicacion.value;
@@ -53,14 +56,14 @@ forma.addEventListener('submit', (e) => {
 })
 
 function recuperarObras(busqueda) {
-    console.log("desde la funcion", busqueda)//probando si trae el objeto
+    console.log("Objeto con los datos del formulario ", busqueda)//probando si trae el objeto
 
     const matrizBusqueda = [];
 
     if (busqueda.a) {
         matrizBusqueda.push(`q=${busqueda.a}`);
     } else {
-        matrizBusqueda.push('q=');
+        matrizBusqueda.push('q=*');
     }
     if (busqueda.b) {
         matrizBusqueda.push(`geoLocation=${busqueda.b}`);
@@ -69,12 +72,16 @@ function recuperarObras(busqueda) {
         matrizBusqueda.push(`departmentId=${busqueda.c}`);
     }
 
-    console.log(matrizBusqueda);//probando si trae el arreglo
-
+    console.log("Arreglo con los datos del Objeto " + matrizBusqueda);//probando si trae el arreglo
+    
     /* creacion de la url final */
-    const urlFinal = urlTop + 'search' + '?hasImages=true&' + matrizBusqueda.join('&');
+    let urlFinal = urlMuseo + 'search' + '?hasImages=true&' + matrizBusqueda.join('&');
 
-    console.log(urlFinal);//probando si se arma la url
+    if (busqueda.c == 0 && busqueda.a == "" && busqueda.b == "") {
+        urlFinal = 'https://collectionapi.metmuseum.org/public/collection/v1/objects';
+    }
+
+    console.log("URL ARMADA: " + urlFinal);//probando si se arma la url
 
     mostrarObras(urlFinal);
     //---------------------------------------------------------------------------------------------------------
@@ -84,47 +91,49 @@ function recuperarObras(busqueda) {
 
 function mostrarObras(urlFinal) {
     return fetch(urlFinal)
-        .then(response => response.json())
-        .then(response => {
-            const datos = response.objectIDs;
+        .then(respuesta => respuesta.json())
+        .then(dato => {
+            let datos = dato.objectIDs;
             /* Achicamos la cantidad de datos */
             if (datos.length > 60) datos = datos.slice(0, 60);
 
-            console.log("CANTIDAD DE DATOS: " + datos.length);//--------------------------------------
+            console.log("CANTIDAD DE DATOS TRAIDOS: " + datos.length);//--------------------------------------
 
             llenarGaleria(datos);
 
         })
-        .catch(error => console.log("No se armó el DIV"));
+        .catch(error => console.log("NO SE TRAJO NADA " + error));
 }
 
 function llenarGaleria(datos) {
+
+    
+
+    //Arreglo con los Datos
     datos.forEach(dato => {
         //fetch
-        fetch(urlTop + 'objects/' + dato)
-            .then(response => response.json())
-            .then(obe => {
-                console.log(obe);//--------------------------------------
+        fetch(urlMuseo + 'objects/' + dato)
+            .then(respuesta => respuesta.json())
+            .then(obra => {
+                console.log("Todos los DATOS: " + obra);//--------------------------------------
                 //creación 
                 const div = document.createElement('div');
-                div.style.border = '2px solid black';
-                div.style.display = 'flex';
-                document.body.appendChild(div);
-                const h2 = document.createElement('h2');
-                h2.innerHTML = obe.title;
-                div.appendChild(h2);
+                div.classList.add('cubos');
+                const h3 = document.createElement('h3');
+                h3.innerHTML = obra.title;
+                div.appendChild(h3);
                 const img = document.createElement('img');
-                img.src = obe.primaryImage;
-                img.style.width = '350px';
-                img.style.height = '383px';
+                img.classList.add('imagen');
+                img.src = obra.primaryImage;
                 div.appendChild(img);
                 const p1 = document.createElement('p');
-                p1.innerHTML = `Departamento: ${obe.department}`;
+                p1.innerHTML = `Cultura: ${obra.culture}, ID: ${obra.objectID}`;
                 div.appendChild(p1);
                 const p2 = document.createElement('p');
-                p2.innerHTML = `Cultura: ${obe.culture}`;
+                p2.innerHTML = `Dinastía: ${obra.dynasty}`;
                 div.appendChild(p2);
+                galeria.appendChild(div);
             })
-            .catch(error => console.log("No Funciona NADA"));
+            .catch(error => console.log("NO TRAJO LA OBRA " + error));
     })
 }
