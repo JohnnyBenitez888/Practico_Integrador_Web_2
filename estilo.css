@@ -61,7 +61,7 @@ h1 {
         border-radius: 8px;
         overflow: hidden;
         text-align: center;
-        background-color: #fff;
+        background-color: #c2e7ec;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         padding: 10px;
 
@@ -99,7 +99,7 @@ h1 {
     align-items: center;
   }
   .modal-content {
-    background-color: #fff;
+    background-color: #bcd3a8;
     padding: 20px;
     border-radius: 8px;
     text-align: center;
