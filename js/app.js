@@ -5,7 +5,10 @@ const selec = document.getElementById('depto');
 const forma = document.getElementById('forma');
 let galeria = document.getElementById('galeria');
 const botones = document.getElementById('botones');
-
+let paginaActual = 1;
+const obrasPorPagina = 20;
+let totalPaginas = 1;
+let datos = [];
 
 /* Otras variables */
 const urlMuseo = 'https://collectionapi.metmuseum.org/public/collection/v1/';
@@ -96,32 +99,45 @@ function mostrarObras(urlFinal) {
         .then(respuesta => respuesta.json())
         .then(dato => {
 
-            let datos = dato.objectIDs;
+            datos = dato.objectIDs;
 
             /* Achicamos la cantidad de datos trayendo solo 60 si es que son muchos*/
             if (datos.length > 60) datos = datos.slice(0, 60);
 
+            totalPaginas = Math.ceil(datos.length / obrasPorPagina);
+
             console.log("CANTIDAD DE DATOS TRAIDOS: " + datos.length);//Prueba si se traen todos los datos
 
-            llenarGaleria(datos);
+            llenarGaleria();
 
         })
         .catch(error => console.log("NO SE TRAJO NADA " + error));
 }
 
+
 /* Funcion para llenar la galeria con los objetos de arte */
-function llenarGaleria(datos) {
+function llenarGaleria() {
+
+    // Limpiar la galería antes de llenarla
+    galeria.innerHTML = '';
+
+    // Calcular los índices para los objetos de la página actual
+    const inicio = (paginaActual - 1) * obrasPorPagina;
+    const final = inicio + obrasPorPagina;
+    const objetosPagina = datos.slice(inicio, final);
+
+
 
     /* Iteramos el Arreglo con los Datos traidos de la API*/
-    datos.forEach(dato => {
-        
+    objetosPagina.forEach(dato => {
+
         /* Usamos fetch para traer un objeto especifico para agregarlo a la galeria */
         fetch(urlMuseo + 'objects/' + dato)
             .then(respuesta => respuesta.json())
             .then(obra => {
 
                 console.log("Todos los DATOS: " + obra);//--------------------------------------
-               
+
                 /* Creacion de elementos HTML y le agregamos los datos de la objeto de arte*/
                 const div = document.createElement('div');
                 div.classList.add('cubos');
@@ -165,7 +181,8 @@ function llenarGaleria(datos) {
                 galeria.appendChild(div);
             })
             .catch(error => console.log("NO TRAJO LA OBRA " + error));
-    })
+    });
+    mostrarBotonesPaginacion();
 }
 
 
@@ -182,7 +199,7 @@ function verMasImagenes(imagenes) {
     contenedor.innerHTML = '';
 
     /* Achicamos el arreglo a solo 4 imágenes*/
-    if(imagenesReducidad.length > 4) imagenesReducidad = imagenesReducidad.slice(0, 4);
+    if (imagenesReducidad.length > 4) imagenesReducidad = imagenesReducidad.slice(0, 4);
 
     /* Añadimos las imágenes al modal */
     imagenesReducidad.forEach(imagen => {
@@ -196,8 +213,39 @@ function verMasImagenes(imagenes) {
     modal.style.display = 'flex';
 }
 
+
 /* Funcion para CERRAR EL MODAL */
 function cerrarModal() {
     const modal = document.getElementById('modal');
     modal.style.display = 'none';
+}
+
+
+/* Paginacion */
+function mostrarBotonesPaginacion() {
+    botones.innerHTML = ''; // Limpiar los botones previos
+
+    // Botón de anterior
+    const botonAnterior = document.createElement('button');
+    botonAnterior.textContent = 'Anterior';
+    botonAnterior.disabled = paginaActual === 1;
+    botonAnterior.onclick = () => {
+        if (paginaActual > 1) {
+            paginaActual--;
+            llenarGaleria();
+        }
+    };
+    botones.appendChild(botonAnterior);
+
+    // Botón de siguiente
+    const botonSiguiente = document.createElement('button');
+    botonSiguiente.textContent = 'Siguiente';
+    botonSiguiente.disabled = paginaActual === totalPaginas;
+    botonSiguiente.onclick = () => {
+        if (paginaActual < totalPaginas) {
+            paginaActual++;
+            llenarGaleria();
+        }
+    };
+    botones.appendChild(botonSiguiente);
 }
