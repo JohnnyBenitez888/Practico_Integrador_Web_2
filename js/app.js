@@ -118,10 +118,10 @@ function mostrarObras(urlFinal) {
 /* Funcion para llenar la galeria con los objetos de arte */
 function llenarGaleria() {
 
-    // Limpiar la galería antes de llenarla
+    /* Limpiar la galería antes de llenarla */
     galeria.innerHTML = '';
 
-    // Calcular los índices para los objetos de la página actual
+    /* Calcular los índices para los objetos de la página actual */
     const inicio = (paginaActual - 1) * obrasPorPagina;
     const final = inicio + obrasPorPagina;
     const objetosPagina = datos.slice(inicio, final);
@@ -221,31 +221,33 @@ function cerrarModal() {
 }
 
 
-/* Paginacion */
+/* ---------------------PAGINACIÓN----------------- */
 function mostrarBotonesPaginacion() {
-    botones.innerHTML = ''; // Limpiar los botones previos
+    
+    /* Limpiar los botones previos */
+    botones.innerHTML = ''; 
 
-    // Botón de anterior
+    /* Creamos el Botón de anterior */
     const botonAnterior = document.createElement('button');
+    botonAnterior.classList.add('botonP');
     botonAnterior.textContent = 'Anterior';
-    botonAnterior.disabled = paginaActual === 1;
     botonAnterior.onclick = () => {
         if (paginaActual > 1) {
             paginaActual--;
             llenarGaleria();
         }
     };
-    botones.appendChild(botonAnterior);
+    if(paginaActual !== 1) botones.appendChild(botonAnterior);
 
-    // Botón de siguiente
+    /* Creamos el Botón de siguiente */
     const botonSiguiente = document.createElement('button');
+    botonSiguiente.classList.add('botonP');
     botonSiguiente.textContent = 'Siguiente';
-    botonSiguiente.disabled = paginaActual === totalPaginas;
     botonSiguiente.onclick = () => {
         if (paginaActual < totalPaginas) {
             paginaActual++;
             llenarGaleria();
         }
     };
-    botones.appendChild(botonSiguiente);
+    if(paginaActual !== totalPaginas) botones.appendChild(botonSiguiente);
 }

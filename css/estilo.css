@@ -7,6 +7,19 @@ body {
   overflow-x: hidden;
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #4b0485;
+  font-weight: 700;
+  font-size: 1.2rem;
+  
+}
+.imgLogo{
+  margin-top: 5px;
+}
+
 h1 {
   text-align: center;
   font-size: 50px;
@@ -43,15 +56,15 @@ h1 {
     width: 10%;
     height: 40px;
     background-color: #9f3647;
-    border: 2px solid #9f3647;
+    border: 2px solid #201a1b;
     color: #ffffff;
     border-radius: 50px;
     font-size: 1rem;
     text-align: center;
     margin-top: 16px;
-
   }
 }
+
 
 .galeria {
   display: grid;
@@ -150,4 +163,18 @@ h1 {
   background-color: #9f3647;
   transform: scale(0.95);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* ------------------------Paginación------------------------ */
+#botones {
+  text-align: center;
+}
+
+.botonP {
+  background-color: #9f3647;
+  border: 2px solid #201a1b;
+  padding: 10px;
+  margin: 5px;
+  font-weight: bold;
+  border-radius: 50px;
 }
