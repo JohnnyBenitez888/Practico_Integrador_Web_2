@@ -166,7 +166,7 @@ function llenarGaleria(datos) {
 
 function verMasImagenes(imagenes) {
     const modal = document.getElementById('modal');
-    const contenedor = document.getElementById('imagenes-adicionales');
+    const contenedor = document.getElementById('imagenesAdicionales');
     let imagenesReducidad = imagenes;
 
     // Limpiamos las imágenes previas

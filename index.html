@@ -14,11 +14,22 @@
     </header>
 
     <form id="forma">
-        <input type="text" name="buscador" id="buscador" class="sisi">
-        <input type="text" name="ubicacion" id="ubicacion" class="sisi">
-        <select name="depto" id="depto" class="sisi">
-            <option value="0">Todos los Departamentos</option>
-        </select>
+        <div class="cajas">
+            <label for="buscador" class="label">Buscador</label>
+            <input type="text" name="buscador" id="buscador" class="sisi" placeholder="books">
+        </div>
+        <div class="cajas">
+            <label for="ubicacion" class="label">Ubicación</label>
+            <input type="text" name="ubicacion" id="ubicacion" class="sisi" placeholder="New York">
+        </div>
+        
+        <div class="cajas">
+            <label for="depto" class="label">Departamento </label>
+            <select name="depto" id="depto" class="sisi">
+                <option value="0">Todos los Departamentos</option>
+            </select>
+        </div>
+        
         <button type="submit" class="boton">Buscar</button>
     </form>
 
@@ -26,7 +37,7 @@
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="cerrarModal()">&times;</span>
-            <div id="imagenes-adicionales"></div>
+            <div id="imagenesAdicionales"></div>
         </div>
     </div>
 

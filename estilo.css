@@ -15,7 +15,7 @@ h1 {
 }
 
 #forma {
-    max-width: 100%;
+    max-width: 60%;
     padding: 40px;
     display: flex;
     margin: 0 auto;
@@ -30,20 +30,25 @@ h1 {
         background-color: #333333;
         outline: none;
         color: rgb(255, 255, 255);
+        
+    }
+
+    .label{
+        color: rgb(10, 9, 9);
+        font-weight: bold;
+        margin-left: 10px;
     }
 
     .boton {
-        width: 70%;
-        height: 6px;
-        box-sizing: content-box;
+        width: 10%;
+        height: 40px;
         background-color: #9f3647;
         border: 2px solid #9f3647;
         color: #ffffff;
-        padding: 1rem 1rem;
-        border-radius: 20px;
+        border-radius: 50px;
         font-size: 1rem;
-        font-weight: 500;
         text-align: center;
+        margin-top: 16px;
 
     }
 }
@@ -111,11 +116,18 @@ h1 {
   .close {
     cursor: pointer;
     float: right;
-    font-size: 1.5rem;
+    font-size: 2rem;
+    color: #070101;
+    font-weight: bold;
   }
   .imagen-modal{
     width: 300px;
     height: 229px;
+  }
+  #imagenesAdicionales{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
 
