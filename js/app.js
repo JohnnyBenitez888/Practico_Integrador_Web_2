@@ -1,4 +1,4 @@
-//Variables
+/* Variables */
 const ubicacion = document.getElementById('ubicacion');
 const buscador = document.getElementById('buscador');
 const selec = document.getElementById('depto');
@@ -7,24 +7,17 @@ let galeria = document.getElementById('galeria');
 const botones = document.getElementById('botones');
 
 
-
-//Otras variables
+/* Otras variables */
 const urlMuseo = 'https://collectionapi.metmuseum.org/public/collection/v1/';
 
-//Funciones
+
+/* Funcion para llenar el Select con los Departamentos*/
 function llenarConDeptos() {
     return fetch(`${urlMuseo}/departments`)
         .then(respuesta => respuesta.json())
         .then(dato => {
 
-            /*  // Agregamos el primer option al select 
-             let primerOption = document.createElement('option');
-             primerOption.value = 0;
-             primerOption.textContent = 'Todos los Departamentos';
-             selec.appendChild(primerOption); */
-
-
-            /* llenamos nuestro select con los departamentos */
+            /* llenamos nuestro select con opcion */
             dato.departments.forEach(departamento => {
                 const option = document.createElement('option');
                 option.value = departamento.departmentId;
@@ -36,28 +29,38 @@ function llenarConDeptos() {
 }
 llenarConDeptos();
 
-/* Evento del Formulario */
+
+/* Evento del Formulario al hacer clic en el boton buscar */
 forma.addEventListener('submit', (e) => {
-    galeria.innerHTML = '';  // Limpiar la galería para cada nueva página
+
+    /* Limpiamos la Galeria */
+    galeria.innerHTML = '';
+
+    /* Para evitar que se recargue la página y se envien los datos */
     e.preventDefault();
+
+    /* Obtenemos los valores de los inputs */
     const buscadorValor = buscador.value;
     const ubicacionValor = ubicacion.value;
     const deptoValor = selec.value;
 
-    //objeto busqueda
+    /* Creamos un objeto busqueda con los valores de los inputs */
     const busqueda = {
         a: buscadorValor,
         b: ubicacionValor,
         c: deptoValor
     };
 
-    /* Llamamos a la funcion para traer las obras */
+    /* Llamamos a la funcion y le pasamos el objeto */
     recuperarObras(busqueda);
 })
 
+
+/* Funcion para crear la URL con los datos del formulario */
 function recuperarObras(busqueda) {
     console.log("Objeto con los datos del formulario ", busqueda)//probando si trae el objeto
 
+    /* creamos la matriz de busqueda con los datos del objeto busqueda */
     const matrizBusqueda = [];
 
     if (busqueda.a) {
@@ -84,20 +87,21 @@ function recuperarObras(busqueda) {
     console.log("URL ARMADA: " + urlFinal);//probando si se arma la url
 
     mostrarObras(urlFinal);
-    //---------------------------------------------------------------------------------------------------------
-
 }
 
 
+/* Función para traer los datos de la API */
 function mostrarObras(urlFinal) {
     return fetch(urlFinal)
         .then(respuesta => respuesta.json())
         .then(dato => {
+
             let datos = dato.objectIDs;
-            /* Achicamos la cantidad de datos */
+
+            /* Achicamos la cantidad de datos trayendo solo 60 si es que son muchos*/
             if (datos.length > 60) datos = datos.slice(0, 60);
 
-            console.log("CANTIDAD DE DATOS TRAIDOS: " + datos.length);//--------------------------------------
+            console.log("CANTIDAD DE DATOS TRAIDOS: " + datos.length);//Prueba si se traen todos los datos
 
             llenarGaleria(datos);
 
@@ -105,18 +109,20 @@ function mostrarObras(urlFinal) {
         .catch(error => console.log("NO SE TRAJO NADA " + error));
 }
 
+/* Funcion para llenar la galeria con los objetos de arte */
 function llenarGaleria(datos) {
 
-
-
-    //Arreglo con los Datos
+    /* Iteramos el Arreglo con los Datos traidos de la API*/
     datos.forEach(dato => {
-        //fetch
+        
+        /* Usamos fetch para traer un objeto especifico para agregarlo a la galeria */
         fetch(urlMuseo + 'objects/' + dato)
             .then(respuesta => respuesta.json())
             .then(obra => {
+
                 console.log("Todos los DATOS: " + obra);//--------------------------------------
-                //creación 
+               
+                /* Creacion de elementos HTML y le agregamos los datos de la objeto de arte*/
                 const div = document.createElement('div');
                 div.classList.add('cubos');
                 const h3 = document.createElement('h3');
@@ -128,26 +134,26 @@ function llenarGaleria(datos) {
                 div.appendChild(img);
                 const p1 = document.createElement('p');
 
-                //Cultura
+                /* Cultura */
                 const cultura = obra.culture;
                 if (cultura === "") {
-                    p1.innerHTML = `Cultura: Desconocida, ID: ${obra.objectID}`;
+                    p1.innerHTML = `<p><b>Cultura:</b> Desconocida, ID: ${obra.objectID}</p>`;
                 } else {
-                    p1.innerHTML = `Cultura: ${cultura}, ID: ${obra.objectID}`;
+                    p1.innerHTML = `<p><b>Cultura:</b> ${cultura}, ID: ${obra.objectID}</p>`;
                 };
                 div.appendChild(p1);
                 const p2 = document.createElement('p');
 
-                //Dinastia
+                /* Dinastia */
                 const dinastia = obra.dynasty;
                 if (dinastia === "") {
-                    p2.innerHTML = `Dinastia: Desconocida`;
+                    p2.innerHTML = `<p><b>Dinastia: </b> Desconocida</p>`;
                 } else {
-                    p2.innerHTML = `Dinastia: ${dinastia}`;
+                    p2.innerHTML = `<p><b>Dinastia: </b> ${dinastia}</p>`;
                 };
                 div.appendChild(p2);
 
-                //Botón de ver mas Imágenes
+                /* Botón de ver Imágenes adicionales*/
                 if (obra.additionalImages.length > 0) {
                     const botonVerMas = document.createElement('button');
                     botonVerMas.classList.add('btn-ver-mas');
@@ -162,17 +168,20 @@ function llenarGaleria(datos) {
     })
 }
 
-/* ---------------------MODAL DE IMAGENES----------------- */
 
+/* ---------------------MODAL DE IMAGENES----------------- */
 function verMasImagenes(imagenes) {
+
     const modal = document.getElementById('modal');
     const contenedor = document.getElementById('imagenesAdicionales');
+
+    /* Arreglo de imagenes traidas de la API */
     let imagenesReducidad = imagenes;
 
-    // Limpiamos las imágenes previas
+    /* Limpiamos las imágenes previas */
     contenedor.innerHTML = '';
 
-    //Achicamos el arreglo
+    /* Achicamos el arreglo a solo 4 imágenes*/
     if(imagenesReducidad.length > 4) imagenesReducidad = imagenesReducidad.slice(0, 4);
 
     /* Añadimos las imágenes al modal */
@@ -183,11 +192,11 @@ function verMasImagenes(imagenes) {
         contenedor.appendChild(imgElement);
     });
 
-    /* Mostramos el modal */
+    /* Mostramos el modal ya que está oculto*/
     modal.style.display = 'flex';
 }
 
-/* ---------------------CERRAR MODAL----------------- */
+/* Funcion para CERRAR EL MODAL */
 function cerrarModal() {
     const modal = document.getElementById('modal');
     modal.style.display = 'none';
