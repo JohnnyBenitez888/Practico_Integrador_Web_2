@@ -1,3 +1,12 @@
+/**
+ * Autor/a: Jonathan Benitez
+ * version: 1.0
+ * fecha: 21/08/2024
+ * El siguiente script se generan funciones para el funcionamiento de la pagina consummiendo la API del Museo Metropolitano de NY..
+ * Este proyecto es una actividad integradora de la materia Web 2
+ */
+
+
 /* Variables */
 const ubicacion = document.getElementById('ubicacion');
 const buscador = document.getElementById('buscador');
