@@ -3,8 +3,7 @@
  * version: 1.0
  * fecha: 21/08/2024
  * El siguiente script se generan funciones para el funcionamiento de la pagina consummiendo la API del Museo Metropolitano de NY..
- * Este proyecto es una actividad integradora de la materia Web 2
- */
+ * Este es el proyecto integrador final de la materia Web 2 */
 
 
 /* Variables */
@@ -19,7 +18,7 @@ const obrasPorPagina = 20;
 let totalPaginas = 1;
 let datos = [];
 
-/* Otras variables */
+/* URL de la API */
 const urlMuseo = 'https://collectionapi.metmuseum.org/public/collection/v1/';
 
 
@@ -29,7 +28,7 @@ function llenarConDeptos() {
         .then(respuesta => respuesta.json())
         .then(dato => {
 
-            /* llenamos nuestro select con opcion */
+            /* llenamos nuestro select con las etiquetas opcion */
             dato.departments.forEach(departamento => {
                 const option = document.createElement('option');
                 option.value = departamento.departmentId;
@@ -37,7 +36,7 @@ function llenarConDeptos() {
                 selec.appendChild(option);
             })
         }
-        ).catch(error => console.log("No se llenan los departamentos"));
+        ).catch(error => console.log("No se cargan los departamentos"));
 }
 llenarConDeptos();
 
@@ -52,51 +51,51 @@ forma.addEventListener('submit', (e) => {
     e.preventDefault();
 
     /* Obtenemos los valores de los inputs */
-    const buscadorValor = buscador.value;
-    const ubicacionValor = ubicacion.value;
-    const deptoValor = selec.value;
+    let busqueda = [];
+    busqueda.push(buscador.value); /* buscador */
+    busqueda.push(ubicacion.value); /* ubicacion */
+    busqueda.push(selec.value); /* departamento */
 
-    /* Creamos un objeto busqueda con los valores de los inputs */
-    const busqueda = {
-        a: buscadorValor,
-        b: ubicacionValor,
-        c: deptoValor
-    };
-
-    /* Llamamos a la funcion y le pasamos el objeto */
+    /* Llamamos a la funcion y le pasamos el arreglo */
     recuperarObras(busqueda);
 })
 
 
 /* Funcion para crear la URL con los datos del formulario */
 function recuperarObras(busqueda) {
-    console.log("Objeto con los datos del formulario ", busqueda)//probando si trae el objeto
+    console.log("Arreglo con los datos del formulario ", busqueda)//probando si trae el objeto
 
-    /* creamos la matriz de busqueda con los datos del objeto busqueda */
-    const matrizBusqueda = [];
-
-    if (busqueda.a) {
-        matrizBusqueda.push(`q=${busqueda.a}`);
+    /* Verificamos la existencia de datos y concatenamos */
+    if (busqueda[0]) {
+        busqueda[0] = `q=${busqueda[0]}`;
     } else {
-        matrizBusqueda.push('q=*');
+        busqueda[0] = 'q=*';
     }
-    if (busqueda.b) {
-        matrizBusqueda.push(`geoLocation=${busqueda.b}`);
+    if (busqueda[1]) {
+        busqueda[1] = `geoLocation=${busqueda[1]}`;
+    } else {
+        busqueda[1] = null;
     }
-    if (busqueda.c != 0) {
-        matrizBusqueda.push(`departmentId=${busqueda.c}`);
+    if (busqueda[2] == 0) {
+        busqueda[2] = null;
+    } else {
+        busqueda[2] = `departmentId=${busqueda[2]}`;
     }
 
-    console.log("Arreglo con los datos del Objeto " + matrizBusqueda);//probando si trae el arreglo
+    /* Quitamos todos los valores nulos del arreglo busqueda */
+    busqueda = busqueda.filter(element => element !== null);
 
-    /* creacion de la url final */
-    let urlFinal = urlMuseo + 'search' + '?hasImages=true&' + matrizBusqueda.join('&');
+    console.log("Arreglo con los datos del Objeto " + busqueda);//probando como quedó el arreglo
 
-    if (busqueda.c == 0 && busqueda.a == "" && busqueda.b == "") {
+    /* creacion de la url final con los datos del arreglo*/
+    let urlFinal = urlMuseo + 'search' + '?hasImages=true&' + busqueda.join('&');
+
+    /* Si el usuario no ingresa ningun dato y aprieta "Buscar", entonces se traen todos los datos de la API */
+    if (busqueda[2] == "" && busqueda[0] == "" && busqueda[1] == "") {
         urlFinal = 'https://collectionapi.metmuseum.org/public/collection/v1/objects';
     }
 
-    console.log("URL ARMADA: " + urlFinal);//probando si se arma la url
+    console.log("URL ARMADA: " + urlFinal);//probando como quedó la URL final
 
     mostrarObras(urlFinal);
 }
@@ -232,9 +231,9 @@ function cerrarModal() {
 
 /* ---------------------PAGINACIÓN----------------- */
 function mostrarBotonesPaginacion() {
-    
+
     /* Limpiar los botones previos */
-    botones.innerHTML = ''; 
+    botones.innerHTML = '';
 
     /* Creamos el Botón de anterior */
     const botonAnterior = document.createElement('button');
@@ -246,7 +245,7 @@ function mostrarBotonesPaginacion() {
             llenarGaleria();
         }
     };
-    if(paginaActual !== 1) botones.appendChild(botonAnterior);
+    if (paginaActual !== 1) botones.appendChild(botonAnterior);
 
     /* Creamos el Botón de siguiente */
     const botonSiguiente = document.createElement('button');
@@ -258,5 +257,5 @@ function mostrarBotonesPaginacion() {
             llenarGaleria();
         }
     };
-    if(paginaActual !== totalPaginas) botones.appendChild(botonSiguiente);
+    if (paginaActual !== totalPaginas) botones.appendChild(botonSiguiente);
 }
