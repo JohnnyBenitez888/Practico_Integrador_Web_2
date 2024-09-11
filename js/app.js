@@ -112,9 +112,10 @@ function mostrarObras(urlFinal) {
             /* Achicamos la cantidad de datos trayendo solo 60 si es que son muchos*/
             if (datos.length > 60) datos = datos.slice(0, 60);
 
+            /* Calculamos el total de paginas a mostrar ya que cada página muestra 20 objetos */
             totalPaginas = Math.ceil(datos.length / obrasPorPagina);
 
-            console.log("CANTIDAD DE DATOS TRAIDOS: " + datos.length);//Prueba si se traen todos los datos
+            console.log("CANTIDAD DE DATOS TRAIDOS: " + datos.length);//Probando la cantidad de datos traidos
 
             llenarGaleria();
 
@@ -144,9 +145,9 @@ function llenarGaleria() {
             .then(respuesta => respuesta.json())
             .then(obra => {
 
-                console.log("Todos los DATOS: " + obra);//--------------------------------------
+                console.log("DATO TRAIDO: " + obra);//Probando el objeto de arte traido
 
-                /* Creacion de elementos HTML y le agregamos los datos de la objeto de arte*/
+                /* Creacion de elementos HTML y le agregamos los datos del objeto de arte*/
                 const div = document.createElement('div');
                 div.classList.add('cubos');
                 const h3 = document.createElement('h3');
@@ -161,9 +162,9 @@ function llenarGaleria() {
                 /* Cultura */
                 const cultura = obra.culture;
                 if (cultura === "") {
-                    p1.innerHTML = `<p><b>Cultura:</b> Desconocida, ID: ${obra.objectID}</p>`;
+                    p1.innerHTML = `<p><b>Cultura:</b> Desconocida</p>`;
                 } else {
-                    p1.innerHTML = `<p><b>Cultura:</b> ${cultura}, ID: ${obra.objectID}</p>`;
+                    p1.innerHTML = `<p><b>Cultura:</b> ${cultura}</p>`;
                 };
                 div.appendChild(p1);
                 const p2 = document.createElement('p');
@@ -171,13 +172,13 @@ function llenarGaleria() {
                 /* Dinastia */
                 const dinastia = obra.dynasty;
                 if (dinastia === "") {
-                    p2.innerHTML = `<p><b>Dinastia: </b> Desconocida</p>`;
+                    p2.innerHTML = `<p><b>Dinastia:</b> Desconocida</p>`;
                 } else {
-                    p2.innerHTML = `<p><b>Dinastia: </b> ${dinastia}</p>`;
+                    p2.innerHTML = `<p><b>Dinastia:</b> ${dinastia}</p>`;
                 };
                 div.appendChild(p2);
 
-                /* Botón de ver Imágenes adicionales*/
+                /* Botón para ver Imágenes adicionales*/
                 if (obra.additionalImages.length > 0) {
                     const botonVerMas = document.createElement('button');
                     botonVerMas.classList.add('btn-ver-mas');
@@ -196,21 +197,17 @@ function llenarGaleria() {
 
 /* ---------------------MODAL DE IMAGENES----------------- */
 function verMasImagenes(imagenes) {
-
     const modal = document.getElementById('modal');
     const contenedor = document.getElementById('imagenesAdicionales');
-
-    /* Arreglo de imagenes traidas de la API */
-    let imagenesReducidad = imagenes;
-
+    
     /* Limpiamos las imágenes previas */
     contenedor.innerHTML = '';
 
     /* Achicamos el arreglo a solo 4 imágenes*/
-    if (imagenesReducidad.length > 4) imagenesReducidad = imagenesReducidad.slice(0, 4);
+    if (imagenes.length > 4) imagenes = imagenes.slice(0, 4);
 
     /* Añadimos las imágenes al modal */
-    imagenesReducidad.forEach(imagen => {
+    imagenes.forEach(imagen => {
         const imgElement = document.createElement('img');
         imgElement.src = imagen;
         imgElement.classList.add('imagen-modal');
@@ -225,6 +222,7 @@ function verMasImagenes(imagenes) {
 /* Funcion para CERRAR EL MODAL */
 function cerrarModal() {
     const modal = document.getElementById('modal');
+    /* Ocultamos el modal */
     modal.style.display = 'none';
 }
 
@@ -239,6 +237,8 @@ function mostrarBotonesPaginacion() {
     const botonAnterior = document.createElement('button');
     botonAnterior.classList.add('botonP');
     botonAnterior.textContent = 'Anterior';
+
+    /* agregamos un evento al Botón para ir a la página anterior */
     botonAnterior.onclick = () => {
         if (paginaActual > 1) {
             paginaActual--;
@@ -251,6 +251,8 @@ function mostrarBotonesPaginacion() {
     const botonSiguiente = document.createElement('button');
     botonSiguiente.classList.add('botonP');
     botonSiguiente.textContent = 'Siguiente';
+    
+    /* agregamos un evento al Botón para ir a la página siguiente */
     botonSiguiente.onclick = () => {
         if (paginaActual < totalPaginas) {
             paginaActual++;
