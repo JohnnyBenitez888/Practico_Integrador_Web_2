@@ -76,7 +76,7 @@ function recuperarObras(busqueda) {
     } else {
         busqueda[1] = null;
     }
-    if (busqueda[2] == 0) {
+    if (busqueda[2]) {
         busqueda[2] = null;
     } else {
         busqueda[2] = `departmentId=${busqueda[2]}`;
@@ -155,7 +155,8 @@ function llenarGaleria() {
                 div.appendChild(h3);
                 const img = document.createElement('img');
                 img.classList.add('imagen');
-                img.src = obra.primaryImage;
+                img.src = obra.primaryImage || './assets/Imagen_no_disponible.png';
+                img.title = obra.objectDate;
                 div.appendChild(img);
                 const p1 = document.createElement('p');
 
@@ -251,7 +252,7 @@ function mostrarBotonesPaginacion() {
     const botonSiguiente = document.createElement('button');
     botonSiguiente.classList.add('botonP');
     botonSiguiente.textContent = 'Siguiente';
-    
+
     /* agregamos un evento al Botón para ir a la página siguiente */
     botonSiguiente.onclick = () => {
         if (paginaActual < totalPaginas) {
