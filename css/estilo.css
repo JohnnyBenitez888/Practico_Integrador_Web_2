@@ -7,12 +7,13 @@
 
 * {
   box-sizing: border-box;
+  font-family: 'Montserrat Alternates', sans-serif;
 }
 
 body {
   width: 100%;
   overflow-x: hidden;
-  background-image: url('/assets/bd_Principal.jpg');
+  background-image: url('/assets/Principal_bd.jpeg');
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat;
@@ -25,7 +26,7 @@ body {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #4b0485;
+  color: #f8f5fa;
   font-weight: 700;
   font-size: 1.2rem;
   
@@ -36,9 +37,10 @@ body {
 
 h1 {
   text-align: center;
-  font-size: 50px;
-  color: rgb(78, 33, 82);
-  font-family: 'Times New Roman', Times, serif;
+  font-size: 60px;
+  color: #9f3647;
+  font-weight: bold;
+  margin-top: 1px;
 }
 
 #forma {
