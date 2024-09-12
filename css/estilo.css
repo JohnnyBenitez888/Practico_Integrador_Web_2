@@ -79,6 +79,7 @@ h1 {
     font-size: 1rem;
     text-align: center;
     margin-top: 16px;
+    cursor: pointer;
   }
 }
 
@@ -209,9 +210,15 @@ footer {
   justify-content: center;
   align-items: center;
   margin-bottom: 0px;
+  
   .footerA {
     text-decoration: none;
   color: #080808;
   font-weight: bold;
   }
+
+  .footerP {
+    -webkit-text-stroke: 0,5px rgb(252, 249, 249); /* Borde negro de 2px alrededor de las letras */
+  }
+  
 }

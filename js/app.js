@@ -63,7 +63,7 @@ forma.addEventListener('submit', (e) => {
 
 /* Funcion para crear la URL con los datos del formulario */
 function recuperarObras(busqueda) {
-    console.log("Arreglo con los datos del formulario ", busqueda)//probando si trae el objeto
+    console.log("1 - Arreglo con los datos del formulario ", busqueda)//probando si trae el objeto
 
     /* Verificamos la existencia de datos y concatenamos */
     if (busqueda[0]) {
@@ -76,22 +76,21 @@ function recuperarObras(busqueda) {
     } else {
         busqueda[1] = null;
     }
-    if (busqueda[2]) {
-        busqueda[2] = null;
-    } else {
+    if (busqueda[2] != "0") {
         busqueda[2] = `departmentId=${busqueda[2]}`;
     }
 
     /* Quitamos todos los valores nulos del arreglo busqueda */
     busqueda = busqueda.filter(element => element !== null);
 
-    console.log("Arreglo con los datos del Objeto " + busqueda);//probando como quedó el arreglo
+    console.log("1 -Arreglo con los datos del Objeto " + busqueda);//probando como quedó el arreglo
 
     /* creacion de la url final con los datos del arreglo*/
     let urlFinal = urlMuseo + 'search' + '?hasImages=true&' + busqueda.join('&');
 
+
     /* Si el usuario no ingresa ningun dato y aprieta "Buscar", entonces se traen todos los datos de la API */
-    if (busqueda[2] == "" && busqueda[0] == "" && busqueda[1] == "") {
+    if (busqueda[0] == 'q=*' && busqueda[1] == '0') {
         urlFinal = 'https://collectionapi.metmuseum.org/public/collection/v1/objects';
     }
 
@@ -102,30 +101,29 @@ function recuperarObras(busqueda) {
 
 
 /* Función para traer los datos de la API */
-function mostrarObras(urlFinal) {
-    return fetch(urlFinal)
-        .then(respuesta => respuesta.json())
-        .then(dato => {
+async function mostrarObras(urlFinal) {
+    try {
+        const respuesta = await fetch(urlFinal);
+        const dato = await respuesta.json();
+        datos = dato.objectIDs;
 
-            datos = dato.objectIDs;
+        /* Achicamos la cantidad de datos trayendo solo 60 si es que son muchos*/
+        if (datos.length > 60) datos = datos.slice(0, 60);
 
-            /* Achicamos la cantidad de datos trayendo solo 60 si es que son muchos*/
-            if (datos.length > 60) datos = datos.slice(0, 60);
+        /* Calculamos el total de paginas a mostrar ya que cada página muestra 20 objetos */
+        totalPaginas = Math.ceil(datos.length / obrasPorPagina);
 
-            /* Calculamos el total de paginas a mostrar ya que cada página muestra 20 objetos */
-            totalPaginas = Math.ceil(datos.length / obrasPorPagina);
+        console.log("CANTIDAD DE DATOS TRAIDOS: " + datos.length); //Probando la cantidad de datos traidos
 
-            console.log("CANTIDAD DE DATOS TRAIDOS: " + datos.length);//Probando la cantidad de datos traidos
-
-            llenarGaleria();
-
-        })
-        .catch(error => console.log("NO SE TRAJO NADA " + error));
+        llenarGaleria();
+    } catch (error) {
+        return console.log("NO SE TRAJO NADA " + error);
+    }
 }
 
 
 /* Funcion para llenar la galeria con los objetos de arte */
-function llenarGaleria() {
+async function llenarGaleria() {
 
     /* Limpiar la galería antes de llenarla */
     galeria.innerHTML = '';
@@ -135,63 +133,62 @@ function llenarGaleria() {
     const final = inicio + obrasPorPagina;
     const objetosPagina = datos.slice(inicio, final);
 
-
-
     /* Iteramos el Arreglo con los Datos traidos de la API*/
-    objetosPagina.forEach(dato => {
+    objetosPagina.forEach(async dato => {
+        try {
+            /* Usamos fetch para traer un objeto especifico para agregarlo a la galeria */
+            const respuesta = await fetch(urlMuseo + 'objects/' + dato);
+            const obra = await respuesta.json();
 
-        /* Usamos fetch para traer un objeto especifico para agregarlo a la galeria */
-        fetch(urlMuseo + 'objects/' + dato)
-            .then(respuesta => respuesta.json())
-            .then(obra => {
+            console.log("DATO TRAIDO: " + obra);//Probando el objeto de arte traido
 
-                console.log("DATO TRAIDO: " + obra);//Probando el objeto de arte traido
+            /* Creacion de elementos HTML y le agregamos los datos del objeto de arte*/
+            const div = document.createElement('div');
+            div.classList.add('cubos');
+            const h3 = document.createElement('h3');
+            h3.innerHTML = obra.title;
+            div.appendChild(h3);
+            const img = document.createElement('img');
+            img.classList.add('imagen');
+            img.src = obra.primaryImage || './assets/Imagen_no_disponible.png';
+            img.title = obra.objectDate;
+            div.appendChild(img);
+            const p1 = document.createElement('p');
 
-                /* Creacion de elementos HTML y le agregamos los datos del objeto de arte*/
-                const div = document.createElement('div');
-                div.classList.add('cubos');
-                const h3 = document.createElement('h3');
-                h3.innerHTML = obra.title;
-                div.appendChild(h3);
-                const img = document.createElement('img');
-                img.classList.add('imagen');
-                img.src = obra.primaryImage || './assets/Imagen_no_disponible.png';
-                img.title = obra.objectDate;
-                div.appendChild(img);
-                const p1 = document.createElement('p');
+            /* Cultura */
+            const cultura = obra.culture;
+            if (cultura === "") {
+                p1.innerHTML = `<p><b>Cultura:</b> Desconocida</p>`;
+            } else {
+                p1.innerHTML = `<p><b>Cultura:</b> ${cultura}</p>`;
+            };
+            div.appendChild(p1);
+            const p2 = document.createElement('p');
 
-                /* Cultura */
-                const cultura = obra.culture;
-                if (cultura === "") {
-                    p1.innerHTML = `<p><b>Cultura:</b> Desconocida</p>`;
-                } else {
-                    p1.innerHTML = `<p><b>Cultura:</b> ${cultura}</p>`;
-                };
-                div.appendChild(p1);
-                const p2 = document.createElement('p');
+            /* Dinastia */
+            const dinastia = obra.dynasty;
+            if (dinastia === "") {
+                p2.innerHTML = `<p><b>Dinastia:</b> Desconocida</p>`;
+            } else {
+                p2.innerHTML = `<p><b>Dinastia:</b> ${dinastia}</p>`;
+            };
+            div.appendChild(p2);
 
-                /* Dinastia */
-                const dinastia = obra.dynasty;
-                if (dinastia === "") {
-                    p2.innerHTML = `<p><b>Dinastia:</b> Desconocida</p>`;
-                } else {
-                    p2.innerHTML = `<p><b>Dinastia:</b> ${dinastia}</p>`;
-                };
-                div.appendChild(p2);
+            /* Botón para ver Imágenes adicionales*/
+            if (obra.additionalImages.length > 0) {
+                const botonVerMas = document.createElement('button');
+                botonVerMas.classList.add('btn-ver-mas');
+                botonVerMas.onclick = () => verMasImagenes(obra.additionalImages);
+                botonVerMas.textContent = 'Ver más imágenes';
+                div.appendChild(botonVerMas);
+            }
 
-                /* Botón para ver Imágenes adicionales*/
-                if (obra.additionalImages.length > 0) {
-                    const botonVerMas = document.createElement('button');
-                    botonVerMas.classList.add('btn-ver-mas');
-                    botonVerMas.onclick = () => verMasImagenes(obra.additionalImages);
-                    botonVerMas.textContent = 'Ver más imágenes';
-                    div.appendChild(botonVerMas);
-                }
-
-                galeria.appendChild(div);
-            })
-            .catch(error => console.log("NO TRAJO LA OBRA " + error));
+            galeria.appendChild(div);
+        } catch (error) {
+            console.error("NO TRAJO LA OBRA " + error);
+        }
     });
+
     mostrarBotonesPaginacion();
 }
 
@@ -200,7 +197,7 @@ function llenarGaleria() {
 function verMasImagenes(imagenes) {
     const modal = document.getElementById('modal');
     const contenedor = document.getElementById('imagenesAdicionales');
-    
+
     /* Limpiamos las imágenes previas */
     contenedor.innerHTML = '';
 
