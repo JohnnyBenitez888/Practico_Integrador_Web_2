@@ -63,7 +63,7 @@ forma.addEventListener('submit', (e) => {
 
 /* Funcion para crear la URL con los datos del formulario */
 function recuperarObras(busqueda) {
-    console.log("1 - Arreglo con los datos del formulario ", busqueda)//probando si trae el objeto
+    console.log("Arreglo con los datos del formulario ", busqueda)//probando si trae el objeto
 
     /* Verificamos la existencia de datos y concatenamos */
     if (busqueda[0]) {
@@ -82,8 +82,6 @@ function recuperarObras(busqueda) {
 
     /* Quitamos todos los valores nulos del arreglo busqueda */
     busqueda = busqueda.filter(element => element !== null);
-
-    console.log("1 -Arreglo con los datos del Objeto " + busqueda);//probando como quedó el arreglo
 
     /* creacion de la url final con los datos del arreglo*/
     let urlFinal = urlMuseo + 'search' + '?hasImages=true&' + busqueda.join('&');
@@ -123,7 +121,7 @@ async function mostrarObras(urlFinal) {
 
 
 /* Funcion para llenar la galeria con los objetos de arte */
-async function llenarGaleria() {
+function llenarGaleria() {
 
     /* Limpiar la galería antes de llenarla */
     galeria.innerHTML = '';
