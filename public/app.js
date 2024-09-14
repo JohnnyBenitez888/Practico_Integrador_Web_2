@@ -119,8 +119,8 @@ async function mostrarObras(urlFinal) {
     }
 }
 
-// Función para traducir texto usando el servidor de Node.js
-async function translateText(text, targetLang) {
+/* Función para traducir texto usando el servidor de Node.js */
+async function traductor(text, targetLang) {
     try {
         const response = await fetch('/translate', {
             method: 'POST',
@@ -133,7 +133,7 @@ async function translateText(text, targetLang) {
         return result.translatedText;
     } catch (error) {
         console.error('Error al traducir el texto:', error);
-        return text; // Devuelve el texto original si hay un error
+        return text; /* Devuelve el texto original si hay un error */
     }
 }
 
@@ -158,9 +158,10 @@ function llenarGaleria() {
 
             console.log("DATO TRAIDO: " + obra);//Probando el objeto de arte traido
 
-            const titulo = await translateText(obra.title || 'Sin título', 'es');
-            const cultura = await translateText(obra.culture, 'es');
-            const dinastia = await translateText(obra.dynasty, 'es');
+            /* Traducimos los datos del objeto de arte */
+            const titulo = await traductor(obra.title || 'Sin título', 'es');
+            const cultura = await traductor(obra.culture, 'es');
+            const dinastia = await traductor(obra.dynasty, 'es');
 
             /* Creacion de elementos HTML y le agregamos los datos del objeto de arte*/
             const div = document.createElement('div');
@@ -171,6 +172,9 @@ function llenarGaleria() {
             const img = document.createElement('img');
             img.classList.add('imagen');
             img.src = obra.primaryImage || 'assets/Imagen_no_disponible.png';
+            img.onerror = () => {
+                img.src = 'assets/Imagen_no_disponible.png'; /* Si la URL es incorrecta o la imagen no carga, se muestra la imagen por defecto */
+            };
             img.title = obra.objectDate;
             div.appendChild(img);
             const p1 = document.createElement('p');

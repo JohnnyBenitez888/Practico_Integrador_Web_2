@@ -1,20 +1,21 @@
 const express = require('express');
 const path = require('path');
-const translate = require('node-google-translate-skidz'); // Importa el paquete de traducción
+/* Importa el paquete de traducción */
+const translate = require('node-google-translate-skidz'); 
 const app = express();
 const port = 3000;
 
-// Middleware para analizar el cuerpo de la solicitud JSON
+/* Middleware para analizar el cuerpo de la solicitud JSON */
 app.use(express.json());
 
-// Ruta para traducir texto
+/* Ruta para traducir texto */
 app.post('/translate', (req, res) => {
     const { text, targetLang } = req.body;
 
     translate({
         text: text,
-        source: 'en', // Idioma de origen (Inglés)
-        target: targetLang, // Idioma de destino (Español)
+        source: 'en', /* Idioma de origen (Inglés) */
+        target: targetLang, /* Idioma de destino (Español) */
     }, (result) => {
         if (result && result.translation) {
             res.json({ translatedText: result.translation });
@@ -23,10 +24,11 @@ app.post('/translate', (req, res) => {
         }
     });
 });
-// Servir archivos estáticos
+
+/* Middleware para servir archivos estáticos */
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Enviar el archivo HTML al acceder a la raíz
+/* Ruta principal */
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
