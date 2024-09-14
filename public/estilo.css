@@ -154,15 +154,24 @@ h1 {
   font-weight: bold;
 }
 
-.imagen-modal {
-  width: 300px;
-  height: 229px;
-}
+
 
 #imagenesAdicionales {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+
+  .div-Image {
+    width: 300px;
+    height: 229px;
+    border: 2px solid #9f3647;
+
+    .imagen-modal {
+      margin-top: 0;
+      width: 296px;
+      height: 225px;
+    }
+  }
 }
 
 
@@ -209,15 +218,16 @@ footer {
   justify-content: center;
   align-items: center;
   margin-bottom: 0px;
-  
+
   .footerA {
     text-decoration: none;
-  color: #080808;
-  font-weight: bold;
+    color: #080808;
+    font-weight: bold;
   }
 
   .footerP {
-    -webkit-text-stroke: 0,5px rgb(252, 249, 249); /* Borde negro de 2px alrededor de las letras */
+    -webkit-text-stroke: 0, 5px rgb(252, 249, 249);
+    /* Borde negro de 2px alrededor de las letras */
   }
-  
+
 }

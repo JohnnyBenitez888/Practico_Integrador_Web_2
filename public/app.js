@@ -230,10 +230,13 @@ function verMasImagenes(imagenes) {
 
     /* Añadimos las imágenes al modal */
     imagenes.forEach(imagen => {
+        const divImages = document.createElement('div');
+        divImages.classList.add('div-Image');
         const imgElement = document.createElement('img');
         imgElement.src = imagen;
         imgElement.classList.add('imagen-modal');
-        contenedor.appendChild(imgElement);
+        divImages.appendChild(imgElement);
+        contenedor.appendChild(divImages);
     });
 
     /* Mostramos el modal ya que está oculto*/
