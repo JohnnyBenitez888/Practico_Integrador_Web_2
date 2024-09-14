@@ -78,6 +78,8 @@ function recuperarObras(busqueda) {
     }
     if (busqueda[2] != "0") {
         busqueda[2] = `departmentId=${busqueda[2]}`;
+    }else{
+        busqueda[2] = null;
     }
 
     /* Quitamos todos los valores nulos del arreglo busqueda */
@@ -87,10 +89,10 @@ function recuperarObras(busqueda) {
     let urlFinal = urlMuseo + 'search' + '?hasImages=true&' + busqueda.join('&');
 
 
-    /* Si el usuario no ingresa ningun dato y aprieta "Buscar", entonces se traen todos los datos de la API */
+    /* Si el usuario no ingresa ningun dato y aprieta "Buscar", entonces se traen todos los datos de la API 
     if (busqueda[0] == 'q=*' && busqueda[1] == '0') {
         urlFinal = 'https://collectionapi.metmuseum.org/public/collection/v1/objects';
-    }
+    }*/
 
     console.log("URL ARMADA: " + urlFinal);//probando como quedó la URL final
 
