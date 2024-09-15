@@ -239,11 +239,11 @@ footer {
   .galeria {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
-  
+
   h1 {
     font-size: 40px;
   }
-  
+
   .cubos {
     padding: 10px;
   }

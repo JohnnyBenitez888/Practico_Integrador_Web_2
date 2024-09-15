@@ -81,7 +81,7 @@ function recuperarObras(busqueda) {
     }
     if (busqueda[2] != "0") {
         busqueda[2] = `departmentId=${busqueda[2]}`;
-    }else{
+    } else {
         busqueda[2] = null;
     }
 
@@ -121,7 +121,7 @@ async function mostrarObras(urlFinal) {
         totalPaginas = Math.ceil(datos.length / obrasPorPagina);
 
         /* Probando la cantidad de datos traidos */
-        console.log("CANTIDAD DE DATOS TRAIDOS: " + datos.length); 
+        console.log("CANTIDAD DE DATOS TRAIDOS: " + datos.length);
 
         llenarGaleria();
     } catch (error) {
@@ -173,7 +173,7 @@ function llenarGaleria() {
             }
 
             /* Probando el objeto de arte traido */
-            console.log("DATO TRAIDO: " , obra);
+            console.log("DATO TRAIDO: ", obra);
 
             /* Traducimos los datos del objeto de arte */
             const titulo = await traductor(obra.title || 'Sin título', 'es');
