@@ -231,3 +231,40 @@ footer {
   }
 
 }
+
+/* ------------------------RESPONSIVE------------------------ */
+
+/* Pantallas más pequeñas */
+@media (max-width: 768px) {
+  .galeria {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  
+  h1 {
+    font-size: 40px;
+  }
+  
+  .cubos {
+    padding: 10px;
+  }
+}
+
+/* móviles */
+@media (max-width: 480px) {
+  body {
+    padding: 0;
+  }
+
+  .galeria {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    padding: 10px;
+  }
+
+  .cubos {
+    padding: 5px;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+}

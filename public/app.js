@@ -50,10 +50,12 @@ forma.addEventListener('submit', (e) => {
     /* Para evitar que se recargue la página y se envien los datos */
     e.preventDefault();
 
+    let input = ubicacion.value;
+
     /* Obtenemos los valores de los inputs */
     let busqueda = [];
     busqueda.push(buscador.value); /* buscador */
-    busqueda.push(ubicacion.value); /* ubicacion */
+    busqueda.push(input.charAt(0).toUpperCase() + input.slice(1)); /* ubicacion */
     busqueda.push(selec.value); /* departamento */
 
     /* Llamamos a la funcion y le pasamos el arreglo */
@@ -63,9 +65,10 @@ forma.addEventListener('submit', (e) => {
 
 /* Funcion para crear la URL con los datos del formulario */
 function recuperarObras(busqueda) {
-    console.log("Arreglo con los datos del formulario ", busqueda)//probando si trae el objeto
 
-    /* Verificamos la existencia de datos y concatenamos */
+    /* verificando los datos de los input y el select */
+    console.log("Arreglo con los datos del formulario ", busqueda)
+
     if (busqueda[0]) {
         busqueda[0] = `q=${busqueda[0]}`;
     } else {
@@ -94,7 +97,8 @@ function recuperarObras(busqueda) {
         urlFinal = 'https://collectionapi.metmuseum.org/public/collection/v1/objects';
     }*/
 
-    console.log("URL ARMADA: " + urlFinal);//probando como quedó la URL final
+    /* Probando como quedó la URL final */
+    console.log("URL ARMADA: " + urlFinal);
 
     mostrarObras(urlFinal);
 }
@@ -107,13 +111,17 @@ async function mostrarObras(urlFinal) {
         const dato = await respuesta.json();
         datos = dato.objectIDs;
 
+        /* Quitamos todos los elementos nulos del arreglo */
+        datos = datos.filter(elemento => elemento !== undefined && elemento !== null);
+
         /* Achicamos la cantidad de datos trayendo solo 60 si es que son muchos*/
         if (datos.length > 60) datos = datos.slice(0, 60);
 
         /* Calculamos el total de paginas a mostrar ya que cada página muestra 20 objetos */
         totalPaginas = Math.ceil(datos.length / obrasPorPagina);
 
-        console.log("CANTIDAD DE DATOS TRAIDOS: " + datos.length); //Probando la cantidad de datos traidos
+        /* Probando la cantidad de datos traidos */
+        console.log("CANTIDAD DE DATOS TRAIDOS: " + datos.length); 
 
         llenarGaleria();
     } catch (error) {
@@ -158,12 +166,19 @@ function llenarGaleria() {
             const respuesta = await fetch(urlMuseo + 'objects/' + dato);
             const obra = await respuesta.json();
 
-            console.log("DATO TRAIDO: " + obra);//Probando el objeto de arte traido
+            /* Verificamos que el objeto de arte exista sino se crea una card con datos por defecto */
+            if (obra.message == "ObjectID not found" || obra.message == 'Not a valid object') {
+                crearObraVacia();
+                return;
+            }
+
+            /* Probando el objeto de arte traido */
+            console.log("DATO TRAIDO: " , obra);
 
             /* Traducimos los datos del objeto de arte */
             const titulo = await traductor(obra.title || 'Sin título', 'es');
-            const cultura = await traductor(obra.culture, 'es');
-            const dinastia = await traductor(obra.dynasty, 'es');
+            const cultura = await traductor(obra.culture || 'Desconocida', 'es');
+            const dinastia = await traductor(obra.dynasty || 'Desconocida', 'es');
 
             /* Creacion de elementos HTML y le agregamos los datos del objeto de arte*/
             const div = document.createElement('div');
@@ -214,6 +229,28 @@ function llenarGaleria() {
     });
 
     mostrarBotonesPaginacion();
+}
+
+/* Funcion para crear una card nueva si el objeto de arte no existe */
+function crearObraVacia() {
+    /* Creacion de elementos HTML y le agregamos los datos del objeto de arte*/
+    const div = document.createElement('div');
+    div.classList.add('cubos');
+    const h3 = document.createElement('h3');
+    h3.innerHTML = "Sin Datos";
+    div.appendChild(h3);
+    const img = document.createElement('img');
+    img.classList.add('imagen');
+    img.src = 'assets/Imagen_no_disponible.png';
+    img.title = 'NADA';
+    div.appendChild(img);
+    const p1 = document.createElement('p');
+    p1.innerHTML = `<p><b>Cultura:</b> Sin Datos</p>`;
+    div.appendChild(p1);
+    const p2 = document.createElement('p');
+    p2.innerHTML = `<p><b>Dinastia:</b> Sin Datos</p>`;
+    div.appendChild(p2);
+    galeria.appendChild(div);
 }
 
 
