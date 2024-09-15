@@ -40,7 +40,7 @@ La información de los endpoints disponibles y como usarlo se encuentra en https
    - El sitio debe estar publicado en un hosting o servidor accesible por internet. Se debe investigar el proceso de despliegue o publicación de la aplicación en el hosting seleccionado.
 
    
-   #### Instrucciones para ejecutar localmente
+## Instrucciones para ejecutar localmente
 
 1. **Clonar el repositorio:**
 
