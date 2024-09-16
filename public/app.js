@@ -182,10 +182,7 @@ function llenarGaleria() {
 
             /* Creacion de elementos HTML y le agregamos los datos del objeto de arte*/
             const div = document.createElement('div');
-            div.classList.add('cubos');
-            const h3 = document.createElement('h3');
-            h3.innerHTML = titulo;
-            div.appendChild(h3);
+            div.classList.add('cubos');           
             const img = document.createElement('img');
             img.classList.add('imagen');
             img.src = obra.primaryImage || 'assets/Imagen_no_disponible.png';
@@ -194,6 +191,9 @@ function llenarGaleria() {
             };
             img.title = obra.objectDate;
             div.appendChild(img);
+            const h3 = document.createElement('h3');
+            h3.innerHTML = titulo;
+            div.appendChild(h3);
             const p1 = document.createElement('p');
 
             /* Cultura */
@@ -235,15 +235,15 @@ function llenarGaleria() {
 function crearObraVacia() {
     /* Creacion de elementos HTML y le agregamos los datos del objeto de arte*/
     const div = document.createElement('div');
-    div.classList.add('cubos');
-    const h3 = document.createElement('h3');
-    h3.innerHTML = "Sin Datos";
-    div.appendChild(h3);
+    div.classList.add('cubos');   
     const img = document.createElement('img');
     img.classList.add('imagen');
     img.src = 'assets/Imagen_no_disponible.png';
     img.title = 'NADA';
     div.appendChild(img);
+    const h3 = document.createElement('h3');
+    h3.innerHTML = "Sin Datos";
+    div.appendChild(h3);
     const p1 = document.createElement('p');
     p1.innerHTML = `<p><b>Cultura:</b> Sin Datos</p>`;
     div.appendChild(p1);
