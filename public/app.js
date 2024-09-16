@@ -14,6 +14,7 @@ const forma = document.getElementById('forma');
 let galeria = document.getElementById('galeria');
 let botones = document.getElementById('botones');
 let cartel = document.getElementById('cartel');
+let footer = document.getElementById('footer');
 let paginaActual = 1;
 const obrasPorPagina = 20;
 let totalPaginas = 1;
@@ -145,7 +146,7 @@ function cartelError() {
     cartelito.classList.add('cartelito');
     cartelito.innerHTML = 'No hay objetos de Arte disponibles con esos datos. Intenta con otros datos.';
     cartel.appendChild(cartelito);
-    document.body.appendChild(cartel);
+    document.body.insertBefore(cartel, footer);
 }
 
 
