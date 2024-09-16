@@ -120,6 +120,21 @@ h1 {
   object-fit: cover;
 }
 
+/*------------------------CARTELITO DE DATOS NO DISPONIBLES------------------------*/
+.cartel {
+  display: none;
+  justify-content: center;
+
+  .cartelito{
+    background-color: #bcd3a8;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    color: #9f3647;
+    font-weight: bold;
+  }
+}
+
 /*------------------------MODAL DE IMAGENES------------------------*/
 .modal {
   display: none;

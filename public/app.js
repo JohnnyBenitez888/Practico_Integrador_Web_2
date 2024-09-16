@@ -12,7 +12,8 @@ const buscador = document.getElementById('buscador');
 const selec = document.getElementById('depto');
 const forma = document.getElementById('forma');
 let galeria = document.getElementById('galeria');
-const botones = document.getElementById('botones');
+let botones = document.getElementById('botones');
+let cartel = document.getElementById('cartel');
 let paginaActual = 1;
 const obrasPorPagina = 20;
 let totalPaginas = 1;
@@ -46,7 +47,8 @@ forma.addEventListener('submit', (e) => {
 
     /* Limpiamos la Galeria */
     galeria.innerHTML = '';
-
+    botones.innerHTML = '';
+    cartel.style.display = 'none';
     /* Para evitar que se recargue la página y se envien los datos */
     e.preventDefault();
 
@@ -117,6 +119,10 @@ async function mostrarObras(urlFinal) {
         /* Achicamos la cantidad de datos trayendo solo 60 si es que son muchos*/
         if (datos.length > 60) datos = datos.slice(0, 60);
 
+        /* reseteando datos globales */
+        paginaActual = 1;
+        totalPaginas = 1;
+
         /* Calculamos el total de paginas a mostrar ya que cada página muestra 20 objetos */
         totalPaginas = Math.ceil(datos.length / obrasPorPagina);
 
@@ -125,9 +131,23 @@ async function mostrarObras(urlFinal) {
 
         llenarGaleria();
     } catch (error) {
+        cartelError();/* Mostramos el cartel de no disponibles */
         return console.log("NO SE TRAJO NADA " + error);
     }
 }
+
+
+/* función para mostrar el cartel de que no hay datos disponibles con los datos del fomulario */
+function cartelError() {
+    cartel.innerHTML = '';
+    cartel.style.display = 'block';
+    let cartelito = document.createElement('p');
+    cartelito.classList.add('cartelito');
+    cartelito.innerHTML = 'No hay objetos de Arte disponibles con esos datos. Intenta con otros datos.';
+    cartel.appendChild(cartelito);
+    document.body.appendChild(cartel);
+}
+
 
 /* Función para traducir texto usando el servidor de Node.js */
 async function traductor(text, targetLang) {
@@ -168,7 +188,7 @@ function llenarGaleria() {
 
             /* Verificamos que el objeto de arte exista sino se crea una card con datos por defecto */
             if (obra.message == "ObjectID not found" || obra.message == 'Not a valid object') {
-                crearObraVacia();
+                crearCard();
                 return;
             }
 
@@ -231,8 +251,9 @@ function llenarGaleria() {
     mostrarBotonesPaginacion();
 }
 
+
 /* Funcion para crear una card nueva si el objeto de arte no existe */
-function crearObraVacia() {
+function crearCard() {
     /* Creacion de elementos HTML y le agregamos los datos del objeto de arte*/
     const div = document.createElement('div');
     div.classList.add('cubos');   
@@ -242,7 +263,7 @@ function crearObraVacia() {
     img.title = 'NADA';
     div.appendChild(img);
     const h3 = document.createElement('h3');
-    h3.innerHTML = "Sin Datos";
+    h3.innerHTML = "Objeto de Arte No Disponible";
     div.appendChild(h3);
     const p1 = document.createElement('p');
     p1.innerHTML = `<p><b>Cultura:</b> Sin Datos</p>`;
