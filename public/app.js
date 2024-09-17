@@ -95,10 +95,12 @@ function recuperarObras(busqueda) {
     let urlFinal = urlMuseo + 'search' + '?hasImages=true&' + busqueda.join('&');
 
 
-    /* Si el usuario no ingresa ningun dato y aprieta "Buscar", entonces se traen todos los datos de la API 
-    if (busqueda[0] == 'q=*' && busqueda[1] == '0') {
-        urlFinal = 'https://collectionapi.metmuseum.org/public/collection/v1/objects';
-    }*/
+    /* Si el usuario no ingresa ningun dato y aprieta "Buscar", entonces hacemos que se traigan 
+    pocos datos de la API con una url modificada ya que tarda mucho tiempo en traer todos los datos
+     y elservidor se podría caer..*/
+    if (urlFinal === 'https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=*') {
+        urlFinal = 'https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=*&perPage=50';
+    }
 
     /* Probando como quedó la URL final */
     console.log("URL ARMADA: " + urlFinal);
