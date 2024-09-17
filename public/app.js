@@ -152,7 +152,7 @@ function cartelError() {
 }
 
 
-/* Función para traducir texto usando el servidor de Node.js */
+/* Función para traducir texto de la card*/
 async function traductor(text, targetLang) {
     try {
         const response = await fetch('/translate', {
