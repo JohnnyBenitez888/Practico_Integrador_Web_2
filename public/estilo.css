@@ -2,7 +2,7 @@
  * Autor/a: Jonathan Benitez
  * version: 1.0
  * fecha: 21/08/2024
- * El siguiente script se genera el estilo para la pagina web consumiendo la API del Museo Metropolitano de NY...
+ * Estilos para el trabajo integrador de la materia WEB 2 donde consume la API del Museo Metropolitano de NY...
  */
 
 * {
@@ -167,6 +167,10 @@ h1 {
   font-size: 2rem;
   color: #070101;
   font-weight: bold;
+
+  &:hover {
+    color: #9f3647;
+  }
 }
 
 
