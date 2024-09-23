@@ -80,6 +80,12 @@ h1 {
     text-align: center;
     margin-top: 16px;
     cursor: pointer;
+
+    &:hover {
+      background-color: #9f3647;
+      transform: scale(0.95);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
   }
 }
 
@@ -125,7 +131,7 @@ h1 {
   display: none;
   justify-content: center;
 
-  .cartelito{
+  .cartelito {
     background-color: #bcd3a8;
     padding: 20px;
     border-radius: 8px;

@@ -120,7 +120,7 @@ async function mostrarObras(urlFinal) {
         datos = datos.filter(elemento => elemento !== undefined && elemento !== null);
 
         /* Achicamos la cantidad de datos trayendo solo 60 si es que son muchos*/
-        if (datos.length > 60) datos = datos.slice(0, 60);
+        if (datos.length > 60) datos = datos.slice(0, 100);
 
         /* reseteando datos globales */
         paginaActual = 1;
