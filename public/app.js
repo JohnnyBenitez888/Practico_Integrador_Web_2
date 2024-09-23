@@ -58,7 +58,7 @@ forma.addEventListener('submit', (e) => {
     /* Obtenemos los valores de los inputs */
     let busqueda = [];
     busqueda.push(buscador.value); /* buscador */
-    busqueda.push(input.charAt(0).toUpperCase() + input.slice(1)); /* ubicacion */
+    busqueda.push(input.charAt(0).toUpperCase() + input.slice(1)); /* ubicacion Con la primer letra en mayúscula*/
     busqueda.push(selec.value); /* departamento */
 
     /* Llamamos a la funcion y le pasamos el arreglo */
@@ -97,7 +97,7 @@ function recuperarObras(busqueda) {
 
     /* Si el usuario no ingresa ningun dato y aprieta "Buscar", entonces hacemos que se traigan 
     pocos datos de la API con una url modificada ya que tarda mucho tiempo en traer todos los datos
-     y elservidor se podría caer..*/
+     y el servidor se podría caer..*/
     if (urlFinal === 'https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=*') {
         urlFinal = 'https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=*&perPage=50';
     }
