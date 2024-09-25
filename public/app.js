@@ -7,7 +7,7 @@
 
 
 /* Variables */
-const ubicacion = document.getElementById('ubicacion');
+const selectUbicacion = document.getElementById('ubicacion');
 const buscador = document.getElementById('buscador');
 const selec = document.getElementById('depto');
 const forma = document.getElementById('forma');
@@ -23,6 +23,10 @@ let datos = [];
 /* URL de la API */
 const urlMuseo = 'https://collectionapi.metmuseum.org/public/collection/v1/';
 
+
+/* Llenamos los select */
+llenarConDeptos();
+llenarUbicaciones();
 
 /* Funcion para llenar el Select con los Departamentos*/
 function llenarConDeptos() {
@@ -40,7 +44,7 @@ function llenarConDeptos() {
         }
         ).catch(error => console.log("No se cargan los departamentos"));
 }
-llenarConDeptos();
+
 
 
 /* Evento del Formulario al hacer clic en el boton buscar */
@@ -53,12 +57,10 @@ forma.addEventListener('submit', (e) => {
     /* Para evitar que se recargue la página y se envien los datos */
     e.preventDefault();
 
-    let input = ubicacion.value;
-
     /* Obtenemos los valores de los inputs */
     let busqueda = [];
     busqueda.push(buscador.value); /* buscador */
-    busqueda.push(input.charAt(0).toUpperCase() + input.slice(1)); /* ubicacion Con la primer letra en mayúscula*/
+    busqueda.push(selectUbicacion.value); /* ubicacion */
     busqueda.push(selec.value); /* departamento */
 
     /* Llamamos a la funcion y le pasamos el arreglo */
@@ -77,7 +79,7 @@ function recuperarObras(busqueda) {
     } else {
         busqueda[0] = 'q=*';
     }
-    if (busqueda[1]) {
+    if (busqueda[1] != "") {
         busqueda[1] = `geoLocation=${busqueda[1]}`;
     } else {
         busqueda[1] = null;
@@ -346,4 +348,50 @@ function mostrarBotonesPaginacion() {
         }
     };
     if (paginaActual !== totalPaginas) botones.appendChild(botonSiguiente);
+}
+
+/* Función para llenar el select de ubicaciones */
+function llenarUbicaciones() {
+    /* Arreglo con ubicaciones */
+    let locaciones = [
+        { valor: 'Germany', texto: 'Alemania' },
+        { valor: 'Argentina', texto: 'Argentina' },
+        { valor: 'Australia', texto: 'Australia' },
+        { valor: 'Belgium', texto: 'Bélgica' },
+        { valor: 'Bolivia', texto: 'Bolivia' },
+        { valor: 'Canada', texto: 'Canadá' },
+        { valor: 'Chile', texto: 'Chile' },
+        { valor: 'China', texto: 'China' },
+        { valor: 'Colombia', texto: 'Colombia' },
+        { valor: 'Costa Rica', texto: 'Costa Rica' },
+        { valor: 'Denmark', texto: 'Dinamarca' },
+        { valor: 'Egypt', texto: 'Egipto' },
+        { valor: 'El Salvador', texto: 'El Salvador' },
+        { valor: 'Spain', texto: 'España' },
+        { valor: 'Ethiopia', texto: 'Etiopía' },
+        { valor: 'United States', texto: 'Estados Unidos' },
+        { valor: 'Guatemala', texto: 'Guatemala' },
+        { valor: 'India', texto: 'India' },
+        { valor: 'Iraq', texto: 'Irak' },
+        { valor: 'Japan', texto: 'Japón' },
+        { valor: 'Mexico', texto: 'México' },
+        { valor: 'Morocco', texto: 'Marruecos' },
+        { valor: 'Panama', texto: 'Panamá' },
+        { valor: 'Paraguay', texto: 'Paraguay' },
+        { valor: 'Peru', texto: 'Perú' },
+        { valor: 'United Kingdom', texto: 'Reino Unido' },
+        { valor: 'Russia', texto: 'Rusia' },
+        { valor: 'Sweden', texto: 'Suecia' },
+        { valor: 'Switzerland', texto: 'Suiza' },
+        { valor: 'Thailand', texto: 'Tailandia' },
+        { valor: 'Uzbekistan', texto: 'Uzbekistán' }
+    ];
+
+    /* Iteramos el arreglo para llenar el select de ubicaciones */
+    locaciones.forEach(ubicacion => {
+        const option = document.createElement('option');
+        option.value = ubicacion.valor;
+        option.textContent = ubicacion.texto;
+        selectUbicacion.appendChild(option);
+    });
 }

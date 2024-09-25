@@ -62,6 +62,9 @@ h1 {
     color: rgb(255, 255, 255);
 
   }
+  #ubicacion {
+    width: 200px;
+  }
 
   .label {
     color: rgb(10, 9, 9);
