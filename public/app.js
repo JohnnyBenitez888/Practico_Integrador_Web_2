@@ -352,7 +352,7 @@ function mostrarBotonesPaginacion() {
 
 /* Función para llenar el select de ubicaciones */
 function llenarUbicaciones() {
-    /* Arreglo con ubicaciones */
+    /* Arreglo con los paises que sí traen obras */
     let locaciones = [
         { valor: 'Germany', texto: 'Alemania' },
         { valor: 'Argentina', texto: 'Argentina' },
